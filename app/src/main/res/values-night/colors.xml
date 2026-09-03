@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="brand">#A5B4FC</color>
+    <color name="on_brand">#1E1B4B</color>
+    <color name="brand_container">#312E81</color>
+    <color name="on_brand_container">#E0E7FF</color>
+    <color name="accent">#7DD3FC</color>
+
+    <color name="landing_bg">#0B0B12</color>
+    <color name="aurora_1">#7C3AED</color>
+    <color name="aurora_2">#0EA5E9</color>
+    <color name="aurora_3">#DB2777</color>
+    <integer name="aurora_alpha">92</integer>
+
+    <color name="demo_surface">#17171F</color>
+    <color name="demo_selection">#3730A3</color>
+</resources>

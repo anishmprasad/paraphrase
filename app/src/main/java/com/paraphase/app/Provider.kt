@@ -16,7 +16,7 @@ enum class Provider(
     GEMINI(
         id = "gemini",
         label = "Google Gemini (free tier)",
-        defaultModel = "gemini-2.5-flash",
+        defaultModel = "gemini-3.8-flash",
         keyUrl = "https://aistudio.google.com/app/apikey",
         note = "Free tier, no card required. Recommended."
     ),

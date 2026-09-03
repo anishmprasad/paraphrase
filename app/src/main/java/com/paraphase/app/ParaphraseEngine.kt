@@ -60,30 +60,7 @@ class ParaphraseEngine(context: Context) {
     private fun callGemini(text: String, style: Style): String {
         val model = prefs.model
         val url = "$GEMINI_BASE/models/$model:generateContent"
-
-        val generationConfig = JSONObject()
-            .put("temperature", 0.7)
-            .put("maxOutputTokens", 2048)
-        // 2.5 models think by default, which we don't want for a latency-sensitive rewrite.
-        if (model.contains("2.5")) {
-            generationConfig.put("thinkingConfig", JSONObject().put("thinkingBudget", 0))
-        }
-
-        val body = JSONObject()
-            .put(
-                "systemInstruction",
-                JSONObject().put("parts", JSONArray().put(JSONObject().put("text", systemPrompt(style))))
-            )
-            .put(
-                "contents",
-                JSONArray().put(
-                    JSONObject()
-                        .put("role", "user")
-                        .put("parts", JSONArray().put(JSONObject().put("text", text)))
-                )
-            )
-            .put("generationConfig", generationConfig)
-
+        val body = GeminiRequest.body(model, systemPrompt(style), text)
         val response = post(url, body.toString(), mapOf("x-goog-api-key" to prefs.apiKey))
         return ResponseParser.gemini(response)
     }

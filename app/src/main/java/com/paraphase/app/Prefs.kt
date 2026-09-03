@@ -8,6 +8,27 @@ class Prefs(context: Context) {
     private val sp = context.applicationContext
         .getSharedPreferences("paraphase", Context.MODE_PRIVATE)
 
+    init {
+        migrate()
+    }
+
+    /**
+     * The model name is persisted the first time settings are saved, so a new
+     * default alone would not reach anyone who already ran the app. Drop the
+     * stored value when it names a model the provider has since retired, which
+     * makes the getter fall back to the current default.
+     */
+    private fun migrate() {
+        if (sp.getInt(KEY_SCHEMA, 1) >= SCHEMA) return
+        Provider.entries.forEach { provider ->
+            val stored = sp.getString(KEY_MODEL + provider.id, null)
+            if (stored != null && stored in RETIRED_MODELS) {
+                sp.edit().remove(KEY_MODEL + provider.id).apply()
+            }
+        }
+        sp.edit().putInt(KEY_SCHEMA, SCHEMA).apply()
+    }
+
     var provider: Provider
         get() = Provider.fromId(sp.getString(KEY_PROVIDER, null))
         set(value) = sp.edit().putString(KEY_PROVIDER, value.id).apply()
@@ -53,5 +74,15 @@ class Prefs(context: Context) {
         const val KEY_STYLE = "style"
         const val KEY_INSTANT = "instant_replace"
         const val KEY_SEEN_LANDING = "seen_landing"
+        const val KEY_SCHEMA = "schema"
+
+        /** Bump alongside RETIRED_MODELS to re-run the migration. */
+        const val SCHEMA = 2
+
+        /** Models the provider no longer serves to new keys. */
+        val RETIRED_MODELS = setOf(
+            "gemini-2.5-flash", "gemini-2.5-flash-lite", "gemini-2.5-pro",
+            "gemini-2.0-flash", "gemini-1.5-flash", "gemini-1.5-pro"
+        )
     }
 }

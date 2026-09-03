@@ -99,7 +99,7 @@ object ResponseParser {
         val hint = when (code) {
             401, 403 -> "Check your API key in Paraphase."
             429 -> "Free-tier rate limit hit — wait a moment and try again."
-            404 -> "Model not found. Check the model name in Paraphase."
+            404 -> "Model not available. Clear the Model field in Paraphase to return to the current default."
             else -> ""
         }
         return listOf("HTTP $code", apiMessage, hint).filter { it.isNotBlank() }.joinToString(" · ")

@@ -27,6 +27,10 @@ what it does with the text:
 - Ollama Cloud — https://ollama.com/privacy
 - Any OpenAI-compatible endpoint you configure — governed by whoever operates it
 
+By default, on a device that supports it, the rewrite runs **on the phone
+itself** through Gemini Nano. No network request is made and the text reaches
+no one — not the developer, not Google, not any provider.
+
 If you point the app at **Ollama or LM Studio on your own computer**, the text
 goes to that machine on your own network and no third party is involved.
 

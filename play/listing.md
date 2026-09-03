@@ -44,9 +44,13 @@ SEVEN WAYS TO REWRITE
 
 Switch style from the popup and regenerate without starting over.
 
+WORKS WITH NOTHING SET UP
+
+On phones with on-device AI (Pixel 8 and later, recent Galaxy S), Paraphrase rewrites using Gemini Nano running on the device itself. No key, no account, no network, no cost, and your text never leaves the phone. Install it and it works.
+
 BRING YOUR OWN AI, FREE
 
-Paraphrase has no subscription and no account of its own. Pick a provider, paste your own key, and you are done:
+For everything else — and for stronger rewrites — pick a provider, paste your own key, and you are done:
 
 • Google Gemini — free tier, no card required
 • Groq — free tier, and the fastest of these

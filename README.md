@@ -26,11 +26,17 @@ nowhere to write back to, so the result is shown in the popup and copied to the 
 
 ## Free AI providers
 
-Pick one in the app and paste a key. Keys are stored only in the app's private
-SharedPreferences and are sent only to the provider you chose.
+The default needs no setup at all: on a device with on-device AI (Pixel 8 and
+later, recent Galaxy S), Gemini Nano runs the rewrite locally through ML Kit —
+no key, no account, no network, no cost. Anywhere else it falls back to the
+basic phrase rewriter and says so, and adding a free key is a large upgrade.
+
+Keys are stored only in the app's private SharedPreferences and are sent only
+to the provider you chose.
 
 | Provider | Free tier | Get a key |
 |---|---|---|
+| **On-device AI** (default, Gemini Nano via ML Kit) | Free, no key, no network | nothing to set up |
 | **Google Gemini** (default, `gemini-3.8-flash`) | Free tier, no card | https://aistudio.google.com/app/apikey |
 | **Groq** (`llama-3.3-70b-versatile`) | Free tier, daily limits, fastest | https://console.groq.com/keys |
 | **Cerebras** (`llama-3.3-70b`) | ~1M tokens/day | https://cloud.cerebras.ai |
@@ -123,7 +129,8 @@ uploads tagged builds to the internal track.
 ./gradlew installDebug                # build + install on a connected device
 ```
 
-Requires JDK 17 and Android SDK 36. `local.properties` must point at your SDK
+Requires JDK 17 and Android SDK 36. minSdk is 26, which is what ML Kit's
+GenAI APIs require. `local.properties` must point at your SDK
 (`sdk.dir=/path/to/Android/sdk`).
 
 ## Source map
@@ -140,6 +147,7 @@ Requires JDK 17 and Android SDK 36. `local.properties` must point at your SDK
 | `AuroraView.kt` | Drifting gradient background, day/night palette. |
 | `TextMorpher.kt` | Selection sweep and sentence-retype animations. |
 | `Motion.kt` | Honours the system "remove animations" setting. |
+| `OnDeviceAi.kt` | Gemini Nano through ML Kit, with fallback when unsupported. |
 | `Report.kt` | In-app reporting of AI output, required by Play's GenAI policy. |
 
 ## Notes / limits

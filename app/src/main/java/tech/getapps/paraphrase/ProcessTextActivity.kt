@@ -1,4 +1,4 @@
-package com.paraphase.app
+package tech.getapps.paraphrase
 
 import android.content.ClipData
 import android.content.ClipboardManager
@@ -9,7 +9,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.chip.Chip
-import com.paraphase.app.databinding.ActivityProcessTextBinding
+import tech.getapps.paraphrase.databinding.ActivityProcessTextBinding
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 

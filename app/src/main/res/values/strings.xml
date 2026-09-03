@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Paraphase</string>
+    <string name="app_name">Paraphrase</string>
     <string name="action_paraphrase">Paraphrase</string>
 
     <string name="setup_title">Setup</string>
@@ -32,7 +32,7 @@
     <string name="original">Original</string>
     <string name="result">Paraphrase</string>
     <string name="empty_selection">Nothing selected to paraphrase</string>
-    <string name="no_key">No API key set — open Paraphase and add a free key. Using the basic on-device rewriter for now.</string>
+    <string name="no_key">No API key set — open Paraphrase and add a free key. Using the basic on-device rewriter for now.</string>
 
     <!-- landing -->
     <string name="landing_headline">Rewrite any text, right where you typed it.</string>
@@ -59,13 +59,13 @@
     <string name="landing_cta">Set it up — 30 seconds</string>
     <string name="landing_skip">Skip for now</string>
     <string name="how_it_works">How it works</string>
-    <string name="app_mark">Paraphase mark</string>
+    <string name="app_mark">Paraphrase mark</string>
 
     <!-- Google Play's generative-AI policy requires an in-app way to report
          offensive AI output. -->
     <string name="report_email" translatable="false">anish.m.prasad@gmail.com</string>
     <string name="report">Report</string>
-    <string name="report_subject">Paraphase: offensive or harmful result</string>
+    <string name="report_subject">Paraphrase: offensive or harmful result</string>
     <string name="report_intro">Reporting an AI result. Anything you add below helps us understand what went wrong.</string>
     <string name="report_no_email">No email app available to send the report.</string>
 </resources>

@@ -1,11 +1,11 @@
-# Paraphase — Privacy Policy
+# Paraphrase — Privacy Policy
 
 _Last updated: 3 September 2026_
 
-Paraphase is an Android app that rewrites text you select in other apps. This
+Paraphrase is an Android app that rewrites text you select in other apps. This
 policy explains exactly what happens to that text and to your API key.
 
-**Paraphase has no servers.** There is no account, no login, no analytics, no
+**Paraphrase has no servers.** There is no account, no login, no analytics, no
 advertising SDK, and no crash reporting. Nothing is sent to the developer.
 
 ## What leaves your device, and where it goes
@@ -36,7 +36,7 @@ and the text never leaves your phone.
 Neither is transmitted to the developer, and both are deleted when you
 uninstall the app or clear its data.
 
-## What Paraphase never collects
+## What Paraphrase never collects
 
 No name, email address, phone number, contacts, location, device identifiers,
 advertising ID, installed-app list, or usage analytics.
@@ -50,7 +50,7 @@ anything before sending.
 
 ## Children
 
-Paraphase is a general-purpose writing utility and is not directed at children.
+Paraphrase is a general-purpose writing utility and is not directed at children.
 
 ## Changes
 
@@ -61,4 +61,4 @@ repository, with the date above updated.
 
 Questions about this policy: **anish.m.prasad@gmail.com**
 
-Source code: https://github.com/anishmprasad/paraphase
+Source code: https://github.com/anishmprasad/paraphrase

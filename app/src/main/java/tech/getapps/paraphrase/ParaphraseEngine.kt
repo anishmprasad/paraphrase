@@ -1,4 +1,4 @@
-package com.paraphase.app
+package tech.getapps.paraphrase
 
 import android.content.Context
 import kotlinx.coroutines.Dispatchers

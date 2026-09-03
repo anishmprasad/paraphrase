@@ -1,4 +1,4 @@
-package com.paraphase.app
+package tech.getapps.paraphrase
 
 /**
  * Backends that have a usable free tier. Gemini and Groq both hand out a key

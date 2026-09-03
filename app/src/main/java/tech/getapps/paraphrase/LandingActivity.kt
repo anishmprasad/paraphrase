@@ -1,4 +1,4 @@
-package com.paraphase.app
+package tech.getapps.paraphrase
 
 import android.content.Context
 import android.content.Intent
@@ -16,7 +16,7 @@ import androidx.core.view.WindowInsetsControllerCompat
 import androidx.core.view.updateLayoutParams
 import androidx.core.view.updatePadding
 import com.google.android.material.chip.Chip
-import com.paraphase.app.databinding.ActivityLandingBinding
+import tech.getapps.paraphrase.databinding.ActivityLandingBinding
 
 /**
  * The screen you land on. It explains the one thing that is hard to describe in

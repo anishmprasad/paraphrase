@@ -1,4 +1,4 @@
-package com.paraphase.app
+package tech.getapps.paraphrase
 
 import android.content.Context
 
@@ -6,7 +6,7 @@ import android.content.Context
 class Prefs(context: Context) {
 
     private val sp = context.applicationContext
-        .getSharedPreferences("paraphase", Context.MODE_PRIVATE)
+        .getSharedPreferences("paraphrase", Context.MODE_PRIVATE)
 
     init {
         migrate()

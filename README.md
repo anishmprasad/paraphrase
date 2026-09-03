@@ -1,4 +1,4 @@
-# Paraphase
+# Paraphrase
 
 An Android app that rewrites selected text with AI, in place, inside **any** other app.
 
@@ -66,7 +66,7 @@ It is shown once. After that the launcher icon goes straight to setup, and
 
 ## Using it
 
-1. Open **Paraphase**, choose a provider, paste your key, tap **Save**.
+1. Open **Paraphrase**, choose a provider, paste your key, tap **Save**.
 2. In any app, long-press text and drag the handles over what you want rewritten.
 3. Tap **Paraphrase** in the popup toolbar (it may be under the **⋮** overflow — Android
    shows the most-used actions first, and it moves up the list as you use it).
@@ -77,7 +77,7 @@ Turn it off to get a preview card first, with the original, the rewrite, style c
 (Standard / Fluent / Formal / Casual / Concise / Expand / Simple English) and
 Copy / Regenerate / Replace.
 
-Paraphase also appears in any app's **Share** sheet for text.
+Paraphrase also appears in any app's **Share** sheet for text.
 
 ## Publishing to Google Play
 

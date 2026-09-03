@@ -122,7 +122,7 @@
                 android:textAppearance="?attr/textAppearanceLabelSmall" />
         </LinearLayout>
 
-        <com.paraphase.app.MaxHeightScrollView
+        <tech.getapps.paraphrase.MaxHeightScrollView
             android:id="@+id/resultScroller"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -136,7 +136,7 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="?attr/textAppearanceBodyMedium"
                 android:textIsSelectable="true" />
-        </com.paraphase.app.MaxHeightScrollView>
+        </tech.getapps.paraphrase.MaxHeightScrollView>
 
         <LinearLayout
             android:id="@+id/buttonRow"

@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/landing_bg">
 
-    <com.paraphase.app.AuroraView
+    <tech.getapps.paraphrase.AuroraView
         android:id="@+id/aurora"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

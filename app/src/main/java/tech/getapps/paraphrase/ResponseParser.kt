@@ -1,4 +1,4 @@
-package com.paraphase.app
+package tech.getapps.paraphrase
 
 import org.json.JSONObject
 
@@ -97,9 +97,9 @@ object ResponseParser {
             JSONObject(body).optJSONObject("error")?.optString("message").orEmpty()
         }.getOrDefault("")
         val hint = when (code) {
-            401, 403 -> "Check your API key in Paraphase."
+            401, 403 -> "Check your API key in Paraphrase."
             429 -> "Free-tier rate limit hit — wait a moment and try again."
-            404 -> "Model not available. Clear the Model field in Paraphase to return to the current default."
+            404 -> "Model not available. Clear the Model field in Paraphrase to return to the current default."
             else -> ""
         }
         return listOf("HTTP $code", apiMessage, hint).filter { it.isNotBlank() }.joinToString(" · ")

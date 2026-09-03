@@ -4,7 +4,7 @@ Paste these into Play Console → Grow → Store presence → Main store listing
 
 ## App name (30 char limit)
 
-    Paraphase: AI Text Rewriter
+    Paraphrase: AI Text Rewriter
 
 ## Short description (80 char limit)
 
@@ -12,7 +12,7 @@ Paste these into Play Console → Grow → Store presence → Main store listing
 
 ## Full description (4000 char limit)
 
-    Paraphase rewrites text where you already are.
+    Paraphrase rewrites text where you already are.
 
     Select a sentence in any app — an email you are drafting, a message, a form,
     a note — tap Paraphrase in the selection menu, and the words are replaced
@@ -44,7 +44,7 @@ Paste these into Play Console → Grow → Store presence → Main store listing
 
     BRING YOUR OWN AI KEY
 
-    Paraphase has no subscription and no account. You connect it to an AI
+    Paraphrase has no subscription and no account. You connect it to an AI
     provider with a free tier and paste in your own key:
 
     • Google Gemini - free tier, no card required
@@ -59,7 +59,7 @@ Paste these into Play Console → Grow → Store presence → Main store listing
     PRIVACY
 
     Your key is stored only on your device and is sent only to the provider you
-    picked. Paraphase has no servers, no account system and no analytics. Text
+    picked. Paraphrase has no servers, no account system and no analytics. Text
     you rewrite goes directly from your phone to that provider so it can be
     rewritten — nowhere else. Read their privacy policy to understand how they
     handle it.
@@ -73,13 +73,13 @@ Paste these into Play Console → Grow → Store presence → Main store listing
     App category:      Productivity
     Tags:              Writing, Text editing, Productivity
     Contact email:     anish.m.prasad@gmail.com
-    Privacy policy:    https://github.com/anishmprasad/paraphase/blob/main/PRIVACY.md
+    Privacy policy:    https://github.com/anishmprasad/paraphrase/blob/main/PRIVACY.md
                        (works as-is because the repo is public; swap for a
                        GitHub Pages URL if you prefer a plain page)
 
 ## Notes for the reviewer
 
-    Paraphase adds an item to Android's text-selection toolbar via
+    Paraphrase adds an item to Android's text-selection toolbar via
     ACTION_PROCESS_TEXT. To test it:
 
     1. Open the app and tap "Skip for now" to reach the setup screen.

@@ -1,4 +1,4 @@
-package com.paraphase.app
+package tech.getapps.paraphrase
 
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue

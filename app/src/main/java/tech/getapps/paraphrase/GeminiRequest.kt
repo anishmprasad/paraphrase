@@ -1,4 +1,4 @@
-package com.paraphase.app
+package tech.getapps.paraphrase
 
 import org.json.JSONArray
 import org.json.JSONObject

@@ -12,5 +12,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Paraphase"
+rootProject.name = "Paraphrase"
 include(":app")

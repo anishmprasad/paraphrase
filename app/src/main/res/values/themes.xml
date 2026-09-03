@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="Theme.Paraphase" parent="Theme.Material3.DayNight.NoActionBar">
+    <style name="Theme.Paraphrase" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="colorPrimary">@color/brand</item>
         <item name="colorOnPrimary">@color/on_brand</item>
         <item name="colorPrimaryContainer">@color/brand_container</item>
@@ -9,14 +9,14 @@
     </style>
 
     <!-- Edge to edge, transparent bars, background painted by AuroraView. -->
-    <style name="Theme.Paraphase.Landing" parent="Theme.Paraphase">
+    <style name="Theme.Paraphrase.Landing" parent="Theme.Paraphrase">
         <item name="android:windowBackground">@color/landing_bg</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:navigationBarColor">@android:color/transparent</item>
     </style>
 
     <!-- Floats over whatever app the user was in; the host app stays visible. -->
-    <style name="Theme.Paraphase.Overlay" parent="Theme.Material3.DayNight.Dialog">
+    <style name="Theme.Paraphrase.Overlay" parent="Theme.Material3.DayNight.Dialog">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="android:windowNoTitle">true</item>

@@ -16,15 +16,15 @@ val keystoreProperties = Properties().apply {
 val hasReleaseKeystore = keystoreProperties.getProperty("storeFile") != null
 
 android {
-    namespace = "com.paraphase.app"
+    namespace = "tech.getapps.paraphrase"
     compileSdk = 36
 
     defaultConfig {
-        applicationId = "com.paraphase.app"
+        applicationId = "tech.getapps.paraphrase"
         minSdk = 24
         targetSdk = 36
-        versionCode = 2
-        versionName = "1.0.1"
+        versionCode = 1
+        versionName = "1.0"
     }
 
     signingConfigs {

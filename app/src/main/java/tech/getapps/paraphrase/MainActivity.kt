@@ -1,4 +1,4 @@
-package com.paraphase.app
+package tech.getapps.paraphrase
 
 import android.content.ActivityNotFoundException
 import android.content.Intent
@@ -11,7 +11,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
 import androidx.lifecycle.lifecycleScope
-import com.paraphase.app.databinding.ActivityMainBinding
+import tech.getapps.paraphrase.databinding.ActivityMainBinding
 import kotlinx.coroutines.launch
 
 /** Setup screen plus a playground for trying the rewrite without leaving the app. */

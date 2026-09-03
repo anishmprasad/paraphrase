@@ -1,6 +1,6 @@
 # Play Console → Data safety form
 
-Suggested answers for Paraphase. Confirm each against the form as it appears —
+Suggested answers for Paraphrase. Confirm each against the form as it appears —
 Google changes the wording periodically — but this is the accurate picture of
 what the app does.
 
@@ -44,7 +44,7 @@ own credential going to the user's own account, and there is no other
 ## Related policies to expect
 
 - **Generative AI apps** — the app must let users report offensive AI output.
-  Paraphase has a *Report* action on every result (`Report.kt`), which opens the
+  Paraphrase has a *Report* action on every result (`Report.kt`), which opens the
   user's mail app with the input and output prefilled. Set a real address in
   `report_email` (strings.xml) before publishing.
 - **Ads** — none. Declare "No ads".

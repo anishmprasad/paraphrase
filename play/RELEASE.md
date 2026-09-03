@@ -1,4 +1,4 @@
-# Publishing Paraphase to Google Play
+# Publishing Paraphrase to Google Play
 
 What is already done, and what only you can do. The steps that need your Google
 account, your money, or your signing key are marked **[you]** — I can't do those
@@ -21,8 +21,8 @@ app. Back up the `.jks` file and its passwords somewhere safe (a password
 manager, not this repo).
 
 ```bash
-keytool -genkeypair -v -keystore paraphase-release.jks \
-  -alias paraphase -keyalg RSA -keysize 4096 -validity 10000
+keytool -genkeypair -v -keystore paraphrase-release.jks \
+  -alias paraphrase -keyalg RSA -keysize 4096 -validity 10000
 ```
 
 Then copy `keystore.properties.sample` to `keystore.properties` in the project
@@ -91,7 +91,7 @@ version first or the install will fail.
 ## 5b. "Finish setting up your app" — exact answers
 
 The dashboard task list gates closed testing (internal testing does not wait for
-it). Answers for Paraphase as built:
+it). Answers for Paraphrase as built:
 
 | Task | Answer |
 |---|---|
@@ -104,7 +104,7 @@ it). Answers for Paraphase as built:
 | **Government apps** | No. |
 | **Financial features** | None of these. |
 | **Health** | No. |
-| **Privacy policy** | https://github.com/anishmprasad/paraphase/blob/main/PRIVACY.md |
+| **Privacy policy** | https://github.com/anishmprasad/paraphrase/blob/main/PRIVACY.md |
 | **Store listing** | Copy from `listing.md`; icon `assets/icon-512.png`; feature graphic `assets/feature-1024x500.png`; screenshots from `screenshots/`. |
 | **App category** | Productivity. Contact email: anish.m.prasad@gmail.com |
 
@@ -121,7 +121,7 @@ Order that wastes the least time:
 `.github/workflows/play-internal.yml` uploads a tagged build to the internal
 track. It is inert until you add three repository secrets:
 
-- `KEYSTORE_BASE64` — `base64 -i paraphase-release.jks | pbcopy`
+- `KEYSTORE_BASE64` — `base64 -i paraphrase-release.jks | pbcopy`
 - `KEYSTORE_PASSWORD`, `KEY_PASSWORD`, `KEY_ALIAS`
 - `PLAY_SERVICE_ACCOUNT_JSON` — from Play Console → Setup → API access, granting
   the service account "Release manager" on this app only

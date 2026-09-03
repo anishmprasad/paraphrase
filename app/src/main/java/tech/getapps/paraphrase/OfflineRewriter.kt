@@ -1,4 +1,4 @@
-package com.paraphase.app
+package tech.getapps.paraphrase
 
 /**
  * A small, deterministic rewriter used when no API key is configured, or when

@@ -1,4 +1,4 @@
-package com.paraphase.app
+package tech.getapps.paraphrase
 
 import android.content.ActivityNotFoundException
 import android.content.Context
@@ -26,7 +26,7 @@ object Report {
             appendLine(result)
             appendLine()
             appendLine("--- app ---")
-            appendLine("Paraphase ${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})")
+            appendLine("Paraphrase ${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})")
             appendLine("provider: ${Prefs(context).provider.id}")
         }
 

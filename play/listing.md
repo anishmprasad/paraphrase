@@ -54,6 +54,7 @@ Paraphrase has no subscription and no account of its own. Pick a provider, paste
 • Mistral — a large free monthly quota
 • OpenRouter — one key, and any model id ending in ":free"
 • Hugging Face — free tier on shared hardware
+• Ollama Cloud — a free tier of hosted open models
 • Any other OpenAI-compatible endpoint — a gateway, vLLM, llama.cpp
 
 RUN IT ON YOUR OWN MACHINE

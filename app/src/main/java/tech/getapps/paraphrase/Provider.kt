@@ -69,6 +69,15 @@ enum class Provider(
         keyUrl = "https://huggingface.co/settings/tokens",
         note = "Rate limited and on shared hardware, so speed varies."
     ),
+    OLLAMA_CLOUD(
+        id = "ollama_cloud",
+        label = "Ollama Cloud (free tier)",
+        defaultModel = "gpt-oss:120b-cloud",
+        defaultBaseUrl = "https://ollama.com/v1",
+        keyUrl = "https://ollama.com/settings/keys",
+        note = "Ollama's hosted models, no GPU needed. The free tier is metered in GPU time, not tokens, and resets on a rolling window. If the URL ever changes, edit it here.",
+        editableBaseUrl = true
+    ),
     OLLAMA(
         id = "ollama",
         label = "Ollama on your own machine",

@@ -37,12 +37,18 @@ SharedPreferences and are sent only to the provider you chose.
 | **Mistral** (`mistral-small-latest`) | Large monthly quota, requires opting in to training | https://console.mistral.ai/api-keys |
 | **OpenRouter** (`...:free` models) | Free models, one key | https://openrouter.ai/keys |
 | **Hugging Face** (router endpoint) | Rate-limited free tier | https://huggingface.co/settings/tokens |
+| **Ollama Cloud** (`gpt-oss:120b-cloud`) | Free tier, metered in GPU time | https://ollama.com/settings/keys |
 | **Ollama** on your own machine | Free, no key, no quota | https://ollama.com/download |
 | **LM Studio** on your own machine | Free, no key, no quota | https://lmstudio.ai |
 | **Other OpenAI-compatible** | Depends on the endpoint | — |
 | **On-device basic rewriter** | Always free, works offline | no key needed |
 
-To use Ollama or LM Studio, both the phone and the computer must be on the same
+Ollama Cloud runs the same models without a GPU of your own. Its OpenAI-compatible
+route (`https://ollama.com/v1`) is what the community reports and is not spelled
+out in Ollama's own docs, so the Server URL stays editable for that preset — if a
+call 404s, correct the URL rather than waiting for an app update.
+
+To use Ollama or LM Studio locally, both the phone and the computer must be on the same
 network. Start Ollama with `OLLAMA_HOST=0.0.0.0 ollama serve` (or tick "serve on
 network" in LM Studio) and put the computer's LAN address in the Server URL
 field, e.g. `http://192.168.1.42:11434/v1`. Nothing leaves your network.

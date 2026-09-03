@@ -24,6 +24,7 @@ what it does with the text:
 - Mistral — https://mistral.ai/terms/#privacy-policy (note: the free tier requires opting in to training on your data)
 - OpenRouter — https://openrouter.ai/privacy
 - Hugging Face — https://huggingface.co/privacy
+- Ollama Cloud — https://ollama.com/privacy
 - Any OpenAI-compatible endpoint you configure — governed by whoever operates it
 
 If you point the app at **Ollama or LM Studio on your own computer**, the text

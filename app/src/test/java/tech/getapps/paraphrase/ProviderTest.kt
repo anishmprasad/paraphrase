@@ -38,6 +38,16 @@ class ProviderTest {
     }
 
     @Test
+    fun `ollama cloud is hosted and keyed, local ollama is neither`() {
+        assertTrue(Provider.OLLAMA_CLOUD.requiresKey)
+        assertTrue(Provider.OLLAMA_CLOUD.defaultBaseUrl.startsWith("https://"))
+        assertFalse(Provider.OLLAMA.requiresKey)
+        // Both are editable: the cloud route is not formally documented as
+        // OpenAI-compatible, so the user must be able to correct it.
+        assertTrue(Provider.OLLAMA_CLOUD.editableBaseUrl)
+    }
+
+    @Test
     fun `gemini is the only one that is not openai compatible`() {
         Provider.entries.forEach { provider ->
             val expected = provider != Provider.GEMINI && provider != Provider.LOCAL

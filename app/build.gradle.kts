@@ -1,6 +1,19 @@
+import java.util.Properties
+
 plugins {
     id("com.android.application")
 }
+
+// Release signing is driven by keystore.properties, which is NOT in git.
+// Copy keystore.properties.sample and fill it in; without it the release build
+// still assembles, just unsigned.
+val keystorePropertiesFile = rootProject.file("keystore.properties")
+val keystoreProperties = Properties().apply {
+    if (keystorePropertiesFile.exists()) {
+        keystorePropertiesFile.inputStream().use { load(it) }
+    }
+}
+val hasReleaseKeystore = keystoreProperties.getProperty("storeFile") != null
 
 android {
     namespace = "com.paraphase.app"
@@ -14,15 +27,40 @@ android {
         versionName = "1.0"
     }
 
+    signingConfigs {
+        create("release") {
+            if (hasReleaseKeystore) {
+                storeFile = rootProject.file(keystoreProperties.getProperty("storeFile"))
+                storePassword = keystoreProperties.getProperty("storePassword")
+                keyAlias = keystoreProperties.getProperty("keyAlias")
+                keyPassword = keystoreProperties.getProperty("keyPassword")
+            }
+        }
+    }
+
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
+            isShrinkResources = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            signingConfig = if (hasReleaseKeystore) signingConfigs.getByName("release") else null
         }
+        debug {
+            applicationIdSuffix = ".debug"
+            versionNameSuffix = "-debug"
+        }
+    }
+
+    // Play wants a bundle; keep the split config explicit.
+    bundle {
+        language { enableSplit = true }
+        density { enableSplit = true }
+        abi { enableSplit = true }
     }
 
     buildFeatures {
         viewBinding = true
+        buildConfig = true
     }
 
     compileOptions {

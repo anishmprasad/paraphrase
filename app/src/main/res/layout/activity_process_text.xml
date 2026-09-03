@@ -91,16 +91,36 @@
             android:textAppearance="?attr/textAppearanceBodySmall"
             android:visibility="gone" />
 
-        <TextView
-            android:id="@+id/resultLabel"
+        <LinearLayout
+            android:id="@+id/resultLabelRow"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="14dp"
-            android:text="@string/result"
-            android:textAllCaps="true"
-            android:textAppearance="?attr/textAppearanceLabelSmall"
-            android:textColor="?attr/colorPrimary"
-            android:visibility="gone" />
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/resultLabel"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/result"
+                android:textAllCaps="true"
+                android:textAppearance="?attr/textAppearanceLabelSmall"
+                android:textColor="?attr/colorPrimary" />
+
+            <TextView
+                android:id="@+id/reportButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:paddingHorizontal="6dp"
+                android:paddingVertical="2dp"
+                android:alpha="0.6"
+                android:text="@string/report"
+                android:textAppearance="?attr/textAppearanceLabelSmall" />
+        </LinearLayout>
 
         <com.paraphase.app.MaxHeightScrollView
             android:id="@+id/resultScroller"

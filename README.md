@@ -79,6 +79,26 @@ Copy / Regenerate / Replace.
 
 Paraphase also appears in any app's **Share** sheet for text.
 
+## Publishing to Google Play
+
+Everything that does not need a Google account is prepared under [`play/`](play):
+listing copy, store icon and feature graphic, device screenshots, Data safety
+answers, and a step-by-step runbook in [`play/RELEASE.md`](play/RELEASE.md).
+The privacy policy is [`PRIVACY.md`](PRIVACY.md).
+
+```bash
+./gradlew bundleRelease   # app/build/outputs/bundle/release/app-release.aab
+```
+
+The release build is minified and resource-shrunk (~1.7 MB) and is signed only
+if you create `keystore.properties` from the sample — see the runbook, which
+also covers the Play Console steps, the 12-tester/14-day closed-test rule for
+new personal developer accounts, and the optional GitHub Actions workflow that
+uploads tagged builds to the internal track.
+
+Two placeholders must be filled before submitting: `report_email` in
+`strings.xml` and the contact address in `PRIVACY.md`.
+
 ## Build
 
 ```bash
@@ -104,6 +124,7 @@ Requires JDK 17 and Android SDK 36. `local.properties` must point at your SDK
 | `AuroraView.kt` | Drifting gradient background, day/night palette. |
 | `TextMorpher.kt` | Selection sweep and sentence-retype animations. |
 | `Motion.kt` | Honours the system "remove animations" setting. |
+| `Report.kt` | In-app reporting of AI output, required by Play's GenAI policy. |
 
 ## Notes / limits
 

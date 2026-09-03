@@ -238,6 +238,16 @@
                 android:textIsSelectable="true" />
         </com.google.android.material.card.MaterialCardView>
 
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/reportButton"
+            style="@style/Widget.Material3.Button.TextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:minWidth="0dp"
+            android:text="@string/report"
+            android:visibility="gone" />
+
         <!-- howto -->
 
         <TextView

@@ -60,4 +60,12 @@
     <string name="landing_skip">Skip for now</string>
     <string name="how_it_works">How it works</string>
     <string name="app_mark">Paraphase mark</string>
+
+    <!-- Google Play's generative-AI policy requires an in-app way to report
+         offensive AI output. TODO before publishing: set a real address. -->
+    <string name="report_email" translatable="false">support@example.com</string>
+    <string name="report">Report</string>
+    <string name="report_subject">Paraphase: offensive or harmful result</string>
+    <string name="report_intro">Reporting an AI result. Anything you add below helps us understand what went wrong.</string>
+    <string name="report_no_email">No email app available to send the report.</string>
 </resources>

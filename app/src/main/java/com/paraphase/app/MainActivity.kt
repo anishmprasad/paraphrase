@@ -40,6 +40,13 @@ class MainActivity : AppCompatActivity() {
         binding.getKeyButton.setOnClickListener { openKeyPage() }
         binding.testButton.setOnClickListener { runTest() }
         binding.howButton.setOnClickListener { startActivity(LandingActivity.replayIntent(this)) }
+        binding.reportButton.setOnClickListener {
+            Report.launch(
+                this,
+                binding.inputText.text?.toString().orEmpty(),
+                binding.outputText.text.toString()
+            )
+        }
     }
 
     /** targetSdk 36 draws edge to edge, so the scroller owns the bar insets. */
@@ -83,7 +90,10 @@ class MainActivity : AppCompatActivity() {
         binding.modelLayout.visibility = if (needsKey) View.VISIBLE else View.GONE
         binding.baseUrlLayout.visibility =
             if (provider == Provider.OPENAI_COMPAT) View.VISIBLE else View.GONE
-        if (previous != provider) binding.outputCard.visibility = View.GONE
+        if (previous != provider) {
+            binding.outputCard.visibility = View.GONE
+            binding.reportButton.visibility = View.GONE
+        }
     }
 
     /** Writes the visible fields into whichever provider is currently selected. */
@@ -135,6 +145,7 @@ class MainActivity : AppCompatActivity() {
             binding.testButton.isEnabled = true
             binding.outputCard.visibility = View.VISIBLE
             binding.outputText.text = message
+            binding.reportButton.visibility = View.VISIBLE
         }
     }
 

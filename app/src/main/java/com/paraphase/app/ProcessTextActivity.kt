@@ -54,6 +54,7 @@ class ProcessTextActivity : AppCompatActivity() {
         binding.originalText.text = original
         binding.copyButton.setOnClickListener { copyResult() }
         binding.regenerateButton.setOnClickListener { run() }
+        binding.reportButton.setOnClickListener { Report.launch(this, original, lastResult) }
 
         run()
     }
@@ -115,7 +116,7 @@ class ProcessTextActivity : AppCompatActivity() {
         binding.progress.visibility = View.VISIBLE
         binding.status.visibility = View.VISIBLE
         binding.status.text = getString(R.string.working)
-        binding.resultLabel.visibility = View.GONE
+        binding.resultLabelRow.visibility = View.GONE
         binding.resultScroller.visibility = View.GONE
         binding.buttonRow.visibility = View.GONE
         // In instant mode the popup is only a brief spinner, so keep it minimal.
@@ -131,7 +132,7 @@ class ProcessTextActivity : AppCompatActivity() {
         binding.styleScroller.visibility = View.VISIBLE
         binding.originalLabel.visibility = View.VISIBLE
         binding.originalText.visibility = View.VISIBLE
-        binding.resultLabel.visibility = View.VISIBLE
+        binding.resultLabelRow.visibility = View.VISIBLE
         binding.resultScroller.visibility = View.VISIBLE
         binding.resultText.text = result
         binding.buttonRow.visibility = View.VISIBLE
@@ -163,7 +164,7 @@ class ProcessTextActivity : AppCompatActivity() {
         binding.styleScroller.visibility = View.VISIBLE
         binding.originalLabel.visibility = View.GONE
         binding.originalText.visibility = View.GONE
-        binding.resultLabel.visibility = View.GONE
+        binding.resultLabelRow.visibility = View.GONE
         binding.resultScroller.visibility = View.GONE
         binding.buttonRow.visibility = View.VISIBLE
         binding.regenerateButton.visibility = View.VISIBLE

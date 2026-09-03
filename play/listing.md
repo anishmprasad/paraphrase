@@ -72,9 +72,10 @@ Paste these into Play Console → Grow → Store presence → Main store listing
 
     App category:      Productivity
     Tags:              Writing, Text editing, Productivity
-    Contact email:     TODO — the address you want shown publicly
-    Privacy policy:    TODO — public URL of PRIVACY.md
-                       (enable GitHub Pages, or link the file on GitHub)
+    Contact email:     anish.m.prasad@gmail.com
+    Privacy policy:    https://github.com/anishmprasad/paraphase/blob/main/PRIVACY.md
+                       (works as-is because the repo is public; swap for a
+                       GitHub Pages URL if you prefer a plain page)
 
 ## Notes for the reviewer
 

@@ -96,9 +96,6 @@ also covers the Play Console steps, the 12-tester/14-day closed-test rule for
 new personal developer accounts, and the optional GitHub Actions workflow that
 uploads tagged builds to the internal track.
 
-Two placeholders must be filled before submitting: `report_email` in
-`strings.xml` and the contact address in `PRIVACY.md`.
-
 ## Build
 
 ```bash

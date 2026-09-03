@@ -66,11 +66,9 @@ with your key, not unsigned:
 - Notes for the reviewer → bottom of `listing.md` (the app is fully testable
   without an API key, which avoids a common rejection)
 
-Before you submit, fix these two placeholders:
-
-- `report_email` in `app/src/main/res/values/strings.xml` — currently
-  `support@example.com`
-- the contact email at the bottom of `PRIVACY.md`
+The contact address (`report_email` in `strings.xml`, and the bottom of
+`PRIVACY.md`) is set to anish.m.prasad@gmail.com. Change it in both places if
+you later move to a support alias.
 
 ## 5. Run the trial
 

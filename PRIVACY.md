@@ -59,6 +59,6 @@ repository, with the date above updated.
 
 ## Contact
 
-Questions about this policy: **TODO — add your contact email**
+Questions about this policy: **anish.m.prasad@gmail.com**
 
 Source code: https://github.com/anishmprasad/paraphase

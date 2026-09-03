@@ -88,6 +88,34 @@ Note the installed app will be signed by Google (Play App Signing), so it is a
 different signature from your local debug build — uninstall the sideloaded
 version first or the install will fail.
 
+## 5b. "Finish setting up your app" — exact answers
+
+The dashboard task list gates closed testing (internal testing does not wait for
+it). Answers for Paraphase as built:
+
+| Task | Answer |
+|---|---|
+| **App access** | All functionality is available without special access. True: with no API key the app falls back to the on-device rewriter, so every screen works. |
+| **Ads** | No, my app does not contain ads. |
+| **Content ratings** | Category: *Utility, Productivity, Communication or Other*. No violence, sexuality, profanity, drugs, gambling. Users cannot interact or exchange content. No location sharing. No digital purchases. Where asked about AI-generated content, say yes — the app displays model output — and point to the in-app Report action. |
+| **Target audience** | 18 and over. Choosing 13-17 pulls the app into extra Families policy requirements it does not need. |
+| **News app** | No. |
+| **Data safety** | See `data-safety.md`. One type: App activity → Other user-generated content; shared with a third party, not collected; encrypted in transit; optional; purpose is app functionality. |
+| **Government apps** | No. |
+| **Financial features** | None of these. |
+| **Health** | No. |
+| **Privacy policy** | https://github.com/anishmprasad/paraphase/blob/main/PRIVACY.md |
+| **Store listing** | Copy from `listing.md`; icon `assets/icon-512.png`; feature graphic `assets/feature-1024x500.png`; screenshots from `screenshots/`. |
+| **App category** | Productivity. Contact email: anish.m.prasad@gmail.com |
+
+Order that wastes the least time:
+
+1. Upload the AAB to **Internal testing** now — it does not wait for any of the
+   above, and it gets the app onto your phone in minutes.
+2. Work through the table while that is live.
+3. Start the **closed test** as soon as the tasks clear, because its 14-day
+   clock is the long pole.
+
 ## 6. Automating uploads (optional)
 
 `.github/workflows/play-internal.yml` uploads a tagged build to the internal

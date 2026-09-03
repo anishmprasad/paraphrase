@@ -21,6 +21,15 @@ enum class Provider(
     /** true where the user must point us at their own machine. */
     val editableBaseUrl: Boolean = false
 ) {
+    ON_DEVICE_AI(
+        id = "device",
+        label = "On-device AI — no key needed (default)",
+        defaultModel = "gemini-nano",
+        defaultBaseUrl = "",
+        keyUrl = "",
+        note = "Gemini Nano running on your phone. No key, no account, no network, no cost. Needs a device with on-device AI (Pixel 8 and later, recent Galaxy S); anywhere else it quietly uses the basic rewriter, and adding a free key below is a big upgrade.",
+        requiresKey = false
+    ),
     GEMINI(
         id = "gemini",
         label = "Google Gemini (free tier)",
@@ -119,10 +128,14 @@ enum class Provider(
     );
 
     /** Gemini has its own request shape; everything else is OpenAI-compatible. */
-    val isOpenAiCompatible: Boolean get() = this != GEMINI && this != LOCAL
+    val isOpenAiCompatible: Boolean
+        get() = this != GEMINI && this != LOCAL && this != ON_DEVICE_AI
+
+    /** Runs on the phone: no key, no endpoint, nothing to configure. */
+    val isOnDevice: Boolean get() = this == ON_DEVICE_AI || this == LOCAL
 
     companion object {
-        fun fromId(id: String?) = entries.firstOrNull { it.id == id } ?: GEMINI
+        fun fromId(id: String?) = entries.firstOrNull { it.id == id } ?: ON_DEVICE_AI
     }
 }
 

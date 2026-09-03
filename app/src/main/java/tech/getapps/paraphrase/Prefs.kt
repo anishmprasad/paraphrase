@@ -26,6 +26,15 @@ class Prefs(context: Context) {
                 sp.edit().remove(KEY_MODEL + provider.id).apply()
             }
         }
+        // Anyone whose provider was persisted before on-device AI existed, but
+        // who never added a key, had no working configuration. Move them.
+        val storedProvider = sp.getString(KEY_PROVIDER, null)
+        if (storedProvider != null) {
+            val previous = Provider.fromId(storedProvider)
+            if (previous.requiresKey && sp.getString(KEY_API + previous.id, "").isNullOrBlank()) {
+                sp.edit().putString(KEY_PROVIDER, Provider.ON_DEVICE_AI.id).apply()
+            }
+        }
         sp.edit().putInt(KEY_SCHEMA, SCHEMA).apply()
     }
 
@@ -82,7 +91,7 @@ class Prefs(context: Context) {
         const val KEY_SCHEMA = "schema"
 
         /** Bump alongside RETIRED_MODELS to re-run the migration. */
-        const val SCHEMA = 2
+        const val SCHEMA = 3
 
         /** Models the provider no longer serves to new keys. */
         val RETIRED_MODELS = setOf(

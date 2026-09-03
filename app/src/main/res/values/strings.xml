@@ -34,6 +34,7 @@
     <string name="result">Paraphrase</string>
     <string name="empty_selection">Nothing selected to paraphrase</string>
     <string name="no_key">No API key set — open Paraphrase and add a free key. Using the basic on-device rewriter for now.</string>
+    <string name="no_device_ai">This phone has no on-device AI model, so that used the basic rewriter. Adding a free API key in Paraphrase is a big upgrade.</string>
 
     <!-- landing -->
     <string name="landing_headline">Rewrite any text, right where you typed it.</string>

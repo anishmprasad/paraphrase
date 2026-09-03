@@ -21,7 +21,7 @@ android {
 
     defaultConfig {
         applicationId = "tech.getapps.paraphrase"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 36
         versionCode = 1
         versionName = "1.0"
@@ -76,6 +76,9 @@ dependencies {
     implementation("androidx.constraintlayout:constraintlayout:2.2.1")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.7")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.9.0")
+    // Gemini Nano on-device, via AICore. Free, keyless, and offline on
+    // supported devices; degrades to UNAVAILABLE everywhere else.
+    implementation("com.google.mlkit:genai-rewriting:1.0.0-beta1")
 
     testImplementation("junit:junit:4.13.2")
     // The Android SDK's org.json is a stub in unit tests; use the real one.

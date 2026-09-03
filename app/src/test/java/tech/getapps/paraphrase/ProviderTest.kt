@@ -7,8 +7,15 @@ import org.junit.Test
 class ProviderTest {
 
     @Test
+    fun `the default needs no setup at all`() {
+        val default = Provider.fromId(null)
+        assertFalse("the default must not need a key", default.requiresKey)
+        assertTrue("the default must run on the phone", default.isOnDevice)
+    }
+
+    @Test
     fun `every remote preset has a usable base url and model`() {
-        Provider.entries.filter { it != Provider.LOCAL }.forEach { provider ->
+        Provider.entries.filter { !it.isOnDevice }.forEach { provider ->
             assertTrue(
                 "${provider.id} needs a base URL",
                 provider.defaultBaseUrl.startsWith("http")
@@ -48,9 +55,9 @@ class ProviderTest {
     }
 
     @Test
-    fun `gemini is the only one that is not openai compatible`() {
+    fun `gemini is the only remote one that is not openai compatible`() {
         Provider.entries.forEach { provider ->
-            val expected = provider != Provider.GEMINI && provider != Provider.LOCAL
+            val expected = provider != Provider.GEMINI && !provider.isOnDevice
             assertTrue(provider.id, provider.isOpenAiCompatible == expected)
         }
     }
@@ -62,6 +69,7 @@ class ProviderTest {
         // resets that user's provider choice.
         assertTrue(Provider.fromId("gemini") == Provider.GEMINI)
         assertTrue(Provider.fromId("ollama") == Provider.OLLAMA)
-        assertTrue(Provider.fromId("nonsense") == Provider.GEMINI)
+        // An unknown id lands on the zero-setup default, not on a keyed provider.
+        assertTrue(Provider.fromId("nonsense") == Provider.ON_DEVICE_AI)
     }
 }

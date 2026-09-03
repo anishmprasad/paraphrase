@@ -151,9 +151,15 @@ class ProcessTextActivity : AppCompatActivity() {
             binding.primaryButton.setOnClickListener { replaceAndFinish(result) }
         }
 
-        if (engine.usingFallback) {
+        // Say which fallback happened, so "why is this weak?" has an answer.
+        val notice = when {
+            engine.usingFallback -> getString(R.string.no_key)
+            engine.fellBackFromDevice -> getString(R.string.no_device_ai)
+            else -> null
+        }
+        if (notice != null) {
             binding.status.visibility = View.VISIBLE
-            binding.status.text = getString(R.string.no_key)
+            binding.status.text = notice
         }
     }
 

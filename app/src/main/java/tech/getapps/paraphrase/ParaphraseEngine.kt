@@ -15,6 +15,7 @@ class ParaphraseException(message: String) : Exception(message)
 /** Turns selected text into a rewritten version. One entry point: [paraphrase]. */
 class ParaphraseEngine(context: Context) {
 
+    private val context = context.applicationContext
     private val prefs = Prefs(context)
 
     /**
@@ -23,6 +24,11 @@ class ParaphraseEngine(context: Context) {
      */
     val usingFallback: Boolean
         get() = prefs.provider.requiresKey && prefs.apiKey.isBlank()
+
+    /** Set when the on-device model was asked for but could not run. */
+    @Volatile
+    var fellBackFromDevice: Boolean = false
+        private set
 
     suspend fun paraphrase(text: String, style: Style = prefs.style): String =
         withContext(Dispatchers.IO) {
@@ -33,6 +39,18 @@ class ParaphraseEngine(context: Context) {
             }
 
             val provider = prefs.provider
+            fellBackFromDevice = false
+
+            if (provider == Provider.ON_DEVICE_AI) {
+                OnDeviceAi.rewrite(context, input, style)?.let { return@withContext it }
+                // No AICore, model not downloaded, or text too long: use the
+                // phrase rewriter rather than showing an error for something
+                // the user never chose to configure.
+                fellBackFromDevice = true
+                OnDeviceAi.startDownload(context)
+                return@withContext OfflineRewriter.rewrite(input, style)
+            }
+
             if (provider == Provider.LOCAL || usingFallback) {
                 return@withContext OfflineRewriter.rewrite(input, style)
             }

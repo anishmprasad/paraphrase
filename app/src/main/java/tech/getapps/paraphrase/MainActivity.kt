@@ -84,7 +84,7 @@ class MainActivity : AppCompatActivity() {
         binding.modelInput.setText(prefs.model)
         binding.baseUrlInput.setText(prefs.baseUrl)
 
-        val remote = provider != Provider.LOCAL
+        val remote = !provider.isOnDevice
         // A local server needs no key, so the field would only be noise.
         binding.apiKeyLayout.visibility = if (remote && provider.requiresKey) View.VISIBLE else View.GONE
         binding.getKeyButton.visibility = if (provider.keyUrl.isNotBlank()) View.VISIBLE else View.GONE

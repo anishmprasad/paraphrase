@@ -59,18 +59,29 @@ object OnDeviceAi {
      * the model is not downloaded yet, or the text is too long for the model.
      * Null means "fall back", never "fail".
      */
-    suspend fun rewrite(context: Context, text: String, style: Style): String? {
+    suspend fun rewrite(
+        context: Context,
+        text: String,
+        style: Style,
+        onPartial: ((String) -> Unit)? = null
+    ): String? {
         if (text.length > MAX_CHARS) return null
         return withRewriter(context, style) { rewriter ->
             if (rewriter.checkFeatureStatus().awaitFuture() != FeatureStatus.AVAILABLE) {
                 return@withRewriter null
             }
             val request = RewritingRequest.builder(text).build()
-            rewriter.runInference(request).awaitFuture()
-                .results
-                .firstOrNull()
-                ?.text
-                ?.takeIf { it.isNotBlank() }
+            val result = if (onPartial == null) {
+                rewriter.runInference(request).awaitFuture()
+            } else {
+                // Nano streams too, so the on-device path animates like the rest.
+                val accumulated = StringBuilder()
+                rewriter.runInference(request) { chunk ->
+                    accumulated.append(chunk)
+                    onPartial(accumulated.toString())
+                }.awaitFuture()
+            }
+            result.results.firstOrNull()?.text?.takeIf { it.isNotBlank() }
         }
     }
 

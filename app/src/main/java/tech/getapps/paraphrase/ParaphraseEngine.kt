@@ -51,17 +51,17 @@ class ParaphraseEngine(context: Context) {
             fellBackFromDevice = false
 
             if (provider == Provider.ON_DEVICE_AI) {
-                OnDeviceAi.rewrite(context, input, style)?.let { return@withContext it }
+                OnDeviceAi.rewrite(context, input, style, onPartial)?.let { return@withContext it }
                 // No AICore, model not downloaded, or text too long: use the
                 // phrase rewriter rather than showing an error for something
                 // the user never chose to configure.
                 fellBackFromDevice = true
                 OnDeviceAi.startDownload(context)
-                return@withContext OfflineRewriter.rewrite(input, style)
+                return@withContext offline(input, style, onPartial)
             }
 
             if (provider == Provider.LOCAL || usingFallback) {
-                return@withContext OfflineRewriter.rewrite(input, style)
+                return@withContext offline(input, style, onPartial)
             }
 
             val raw = when {
@@ -70,6 +70,27 @@ class ParaphraseEngine(context: Context) {
             }
             ResponseParser.clean(raw, input)
         }
+
+    /**
+     * The offline rewriter is instant, which next to a streaming provider reads
+     * as "nothing happened". Feeding it out word by word keeps one behaviour
+     * across every backend, briefly and without a spinner.
+     */
+    private fun offline(text: String, style: Style, onPartial: ((String) -> Unit)?): String {
+        val result = OfflineRewriter.rewrite(text, style)
+        if (onPartial == null) return result
+
+        val words = result.split(" ")
+        val pause = (OFFLINE_REVEAL_MS / words.size.coerceAtLeast(1)).coerceIn(12L, 45L)
+        val shown = StringBuilder()
+        words.forEachIndexed { index, word ->
+            if (index > 0) shown.append(' ')
+            shown.append(word)
+            onPartial(shown.toString())
+            Thread.sleep(pause)
+        }
+        return result
+    }
 
     // ---------------------------------------------------------------- prompts
 
@@ -90,12 +111,15 @@ class ParaphraseEngine(context: Context) {
         val headers = mapOf("x-goog-api-key" to prefs.apiKey)
         val body = GeminiRequest.body(model, systemPrompt(style), text).toString()
 
-        if (onPartial == null) {
-            val url = "${prefs.baseUrl}/models/$model:generateContent"
-            return ResponseParser.gemini(post(url, body, headers))
+        val plainUrl = "${prefs.baseUrl}/models/$model:generateContent"
+        if (onPartial != null) {
+            val streamUrl = "${prefs.baseUrl}/models/$model:streamGenerateContent?alt=sse"
+            streamOrNull(
+                streamUrl, body, headers, onPartial,
+                ResponseParser::geminiDelta, ResponseParser::gemini
+            )?.let { return it }
         }
-        val url = "${prefs.baseUrl}/models/$model:streamGenerateContent?alt=sse"
-        return stream(url, body, headers, onPartial, ResponseParser::geminiDelta)
+        return ResponseParser.gemini(post(plainUrl, body, headers))
     }
 
     private fun callOpenAiCompatible(
@@ -119,36 +143,48 @@ class ParaphraseEngine(context: Context) {
 
         val key = prefs.apiKey
         val headers = if (key.isBlank()) emptyMap() else mapOf("Authorization" to "Bearer $key")
-        if (onPartial == null) {
-            return ResponseParser.openAi(post(url, body.toString(), headers))
+        if (onPartial != null) {
+            streamOrNull(
+                url, body.toString(), headers, onPartial,
+                ResponseParser::openAiDelta, ResponseParser::openAi
+            )?.let { return it }
         }
-        return stream(url, body.toString(), headers, onPartial, ResponseParser::openAiDelta)
+        // Retry without the stream flag: some endpoints reject it outright.
+        body.remove("stream")
+        return ResponseParser.openAi(post(url, body.toString(), headers))
     }
 
     // ---------------------------------------------------------------- transport
 
     /**
-     * Reads a server-sent-event stream, handing the caller the text so far
-     * after every chunk and returning the whole thing at the end.
+     * Attempts a streamed request. Returns null when streaming is not usable —
+     * the endpoint rejected it, ignored it, or produced nothing — so the caller
+     * can fall back to a single response. Never throws for those cases: the
+     * fallback request is what surfaces a real error.
      */
-    private fun stream(
+    private fun streamOrNull(
         url: String,
         payload: String,
         headers: Map<String, String>,
         onPartial: (String) -> Unit,
-        parseDelta: (String) -> String?
-    ): String {
+        parseDelta: (String) -> String?,
+        parseWhole: (String) -> String
+    ): String? {
         val connection = openConnection(url, headers).apply {
             setRequestProperty("Accept", "text/event-stream")
         }
         try {
             connection.outputStream.use { it.write(payload.toByteArray(StandardCharsets.UTF_8)) }
-            val code = connection.responseCode
-            if (code !in 200..299) {
-                val error = connection.errorStream?.bufferedReader(StandardCharsets.UTF_8)
-                    ?.use(BufferedReader::readText).orEmpty()
-                throw ParaphraseException(ResponseParser.describeHttpError(code, error))
+            if (connection.responseCode !in 200..299) return null
+
+            if (!ResponseParser.isEventStream(connection.contentType)) {
+                // Accepted the flag, answered with one JSON body anyway.
+                val whole = connection.inputStream.bufferedReader(StandardCharsets.UTF_8)
+                    .use(BufferedReader::readText)
+                return runCatching { parseWhole(whole) }.getOrNull()
+                    ?.also(onPartial)
             }
+
             val accumulated = StringBuilder()
             connection.inputStream.bufferedReader(StandardCharsets.UTF_8).use { reader ->
                 while (true) {
@@ -158,12 +194,9 @@ class ParaphraseEngine(context: Context) {
                     onPartial(accumulated.toString())
                 }
             }
-            if (accumulated.isEmpty()) throw ParaphraseException("The model returned an empty result.")
-            return accumulated.toString()
-        } catch (e: ParaphraseException) {
-            throw e
+            return accumulated.toString().takeIf { it.isNotBlank() }
         } catch (e: Exception) {
-            throw ParaphraseException("Network error: ${e.message ?: e.javaClass.simpleName}")
+            return null
         } finally {
             connection.disconnect()
         }
@@ -201,5 +234,8 @@ class ParaphraseEngine(context: Context) {
 
     private companion object {
         const val MAX_CHARS = 8000
+
+        /** Total time to reveal an offline rewrite; short enough not to annoy. */
+        const val OFFLINE_REVEAL_MS = 600L
     }
 }

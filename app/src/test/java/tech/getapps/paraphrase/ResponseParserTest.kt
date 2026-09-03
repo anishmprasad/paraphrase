@@ -1,6 +1,7 @@
 package tech.getapps.paraphrase
 
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
 
@@ -93,6 +94,17 @@ class ResponseParserTest {
             )
         )
         assertEquals(null, ResponseParser.geminiDelta("data: [DONE]"))
+    }
+
+    @Test
+    fun `only a real event-stream content type counts as streaming`() {
+        assertTrue(ResponseParser.isEventStream("text/event-stream"))
+        assertTrue(ResponseParser.isEventStream("text/event-stream; charset=utf-8"))
+        assertTrue(ResponseParser.isEventStream("TEXT/EVENT-STREAM"))
+        // An endpoint that accepts stream:true and answers with plain JSON.
+        assertFalse(ResponseParser.isEventStream("application/json"))
+        assertFalse(ResponseParser.isEventStream(null))
+        assertFalse(ResponseParser.isEventStream(""))
     }
 
     @Test

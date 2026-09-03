@@ -123,6 +123,14 @@ object ResponseParser {
         }.getOrNull()
     }
 
+    /**
+     * Whether a response is actually a stream. Some endpoints accept
+     * "stream": true and answer with one plain JSON body anyway, which must be
+     * parsed as a whole response rather than as SSE.
+     */
+    fun isEventStream(contentType: String?): Boolean =
+        contentType?.lowercase()?.contains("event-stream") == true
+
     /** Strips the "data:" prefix; null for comments, blanks and the done marker. */
     private fun ssePayload(line: String): String? {
         val trimmed = line.trim()

@@ -1,4 +1,4 @@
-# Paraphrase
+<img src="brand/exports/lockup-1280.png" alt="Paraphrase" width="360">
 
 An Android app that rewrites selected text with AI, in place, inside **any** other app.
 

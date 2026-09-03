@@ -9,7 +9,7 @@ for you.
 - `app-release.aab` builds, minified and resource-shrunk (~1.8 MB)
 - release signing wired to `keystore.properties` (gitignored)
 - listing copy in `listing.md`, privacy policy in `../PRIVACY.md`
-- store icon and feature graphic in `assets/`
+- store icon and feature graphic in `../brand/exports/`
 - device screenshots in `screenshots/` (and 9:16-padded copies in
   `screenshots/9x16/` if Play rejects the tall originals)
 - in-app reporting of AI output, required by Play's generative-AI policy
@@ -55,8 +55,8 @@ with your key, not unsigned:
 ## 4. **[you]** Create the app and fill the listing
 
 - App name, short and full description → `listing.md`
-- App icon → `assets/icon-512.png`
-- Feature graphic → `assets/feature-1024x500.png`
+- App icon → `../brand/exports/icon-512.png`
+- Feature graphic → `../brand/exports/feature-1024x500.png`
 - Phone screenshots → `screenshots/` (at least 2; 4-6 is better)
 - Privacy policy URL → publish `PRIVACY.md` at a public URL. The repo is public,
   so enabling GitHub Pages gives you one; a `github.com/.../blob/main/PRIVACY.md`
@@ -105,7 +105,7 @@ it). Answers for Paraphrase as built:
 | **Financial features** | None of these. |
 | **Health** | No. |
 | **Privacy policy** | https://github.com/anishmprasad/paraphrase/blob/main/PRIVACY.md |
-| **Store listing** | Copy from `listing.md`; icon `assets/icon-512.png`; feature graphic `assets/feature-1024x500.png`; screenshots from `screenshots/`. |
+| **Store listing** | Copy from `listing.md`; icon `../brand/exports/icon-512.png`; feature graphic `../brand/exports/feature-1024x500.png`; screenshots from `screenshots/`. |
 | **App category** | Productivity. Contact email: anish.m.prasad@gmail.com |
 
 Order that wastes the least time:

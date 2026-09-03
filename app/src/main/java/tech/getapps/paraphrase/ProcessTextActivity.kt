@@ -10,8 +10,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.chip.Chip
 import tech.getapps.paraphrase.databinding.ActivityProcessTextBinding
+import android.animation.ObjectAnimator
+import android.view.animation.LinearInterpolator
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 /**
  * Entry point from the text-selection floating toolbar (ACTION_PROCESS_TEXT)
@@ -33,6 +37,9 @@ class ProcessTextActivity : AppCompatActivity() {
     private var lastResult: String = ""
     private var style: Style = Style.STANDARD
     private var job: Job? = null
+    private var spin: ObjectAnimator? = null
+    private var shimmer: Shimmer? = null
+    private var streaming = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,10 +59,32 @@ class ProcessTextActivity : AppCompatActivity() {
 
         buildStyleChips()
         binding.originalText.text = original
+        shimmer = Shimmer(binding.originalText)
         binding.copyButton.setOnClickListener { copyResult() }
         binding.regenerateButton.setOnClickListener { run() }
         binding.reportButton.setOnClickListener { Report.launch(this, original, lastResult) }
 
+        run()
+    }
+
+    /**
+     * launchMode is singleTop, so a second selection while this card is open
+     * arrives here rather than in a new instance. Without this the card would
+     * keep showing the previous result — and Replace would write stale text
+     * back into the host app.
+     */
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        setIntent(intent)
+        readIntent(intent)
+        if (original.isBlank()) {
+            toast(getString(R.string.empty_selection))
+            finish()
+            return
+        }
+        lastResult = ""
+        binding.originalText.text = original
+        binding.resultText.text = ""
         run()
     }
 
@@ -95,7 +124,10 @@ class ProcessTextActivity : AppCompatActivity() {
         showLoading()
         job = lifecycleScope.launch {
             try {
-                val result = engine.paraphrase(original, style)
+                val result = engine.paraphrase(original, style) { partial ->
+                    // Arrives on the network thread, one chunk at a time.
+                    lifecycleScope.launch(Dispatchers.Main) { showPartial(partial) }
+                }
                 lastResult = result
                 if (!readOnly && prefs.instantReplace) {
                     replaceAndFinish(result)
@@ -112,7 +144,40 @@ class ProcessTextActivity : AppCompatActivity() {
 
     // ------------------------------------------------------------------ states
 
+    /** First token ends the waiting state; after that the text just grows. */
+    private fun showPartial(partial: String) {
+        if (partial.isBlank()) return
+        if (!streaming) {
+            streaming = true
+            shimmer?.stop()
+            binding.status.visibility = View.GONE
+            binding.resultLabelRow.visibility = View.VISIBLE
+            binding.resultScroller.visibility = View.VISIBLE
+        }
+        binding.resultText.text = "$partial\u258F"
+    }
+
+    private fun startSpin() {
+        if (!Motion.enabled(this)) return
+        spin?.cancel()
+        // The mark is a rewrite cycle, so spinning it is the loading indicator.
+        spin = ObjectAnimator.ofFloat(binding.markIcon, View.ROTATION, 0f, 360f).apply {
+            duration = 1_400L
+            repeatCount = ObjectAnimator.INFINITE
+            interpolator = LinearInterpolator()
+            start()
+        }
+    }
+
+    private fun stopSpin() {
+        spin?.cancel()
+        spin = null
+        binding.markIcon.rotation = 0f
+    }
+
     private fun showLoading() {
+        streaming = false
+        startSpin()
         binding.progress.visibility = View.VISIBLE
         binding.status.visibility = View.VISIBLE
         binding.status.text = getString(R.string.working)
@@ -124,9 +189,12 @@ class ProcessTextActivity : AppCompatActivity() {
         binding.styleScroller.visibility = if (detailed) View.VISIBLE else View.GONE
         binding.originalLabel.visibility = if (detailed) View.VISIBLE else View.GONE
         binding.originalText.visibility = if (detailed) View.VISIBLE else View.GONE
+        if (detailed) binding.originalText.post { shimmer?.start() }
     }
 
     private fun showResult(result: String) {
+        stopSpin()
+        shimmer?.stop()
         binding.progress.visibility = View.GONE
         binding.status.visibility = View.GONE
         binding.styleScroller.visibility = View.VISIBLE
@@ -164,6 +232,8 @@ class ProcessTextActivity : AppCompatActivity() {
     }
 
     private fun showError(message: String) {
+        stopSpin()
+        shimmer?.stop()
         binding.progress.visibility = View.GONE
         binding.status.visibility = View.VISIBLE
         binding.status.text = message
@@ -199,6 +269,8 @@ class ProcessTextActivity : AppCompatActivity() {
     private fun toast(message: String) = Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
 
     override fun onDestroy() {
+        stopSpin()
+        shimmer?.stop()
         job?.cancel()
         super.onDestroy()
     }

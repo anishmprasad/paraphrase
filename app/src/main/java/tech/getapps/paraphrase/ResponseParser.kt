@@ -92,6 +92,46 @@ object ResponseParser {
         return out
     }
 
+    /** One SSE line from an OpenAI-compatible stream: the incremental text. */
+    fun openAiDelta(line: String): String? {
+        val payload = ssePayload(line) ?: return null
+        return runCatching {
+            JSONObject(payload).optJSONArray("choices")
+                ?.optJSONObject(0)
+                ?.optJSONObject("delta")
+                ?.optString("content")
+                ?.takeIf { it.isNotEmpty() }
+        }.getOrNull()
+    }
+
+    /** One SSE line from Gemini's streamGenerateContent, skipping thought parts. */
+    fun geminiDelta(line: String): String? {
+        val payload = ssePayload(line) ?: return null
+        return runCatching {
+            val parts = JSONObject(payload).optJSONArray("candidates")
+                ?.optJSONObject(0)
+                ?.optJSONObject("content")
+                ?.optJSONArray("parts")
+                ?: return@runCatching null
+            buildString {
+                for (i in 0 until parts.length()) {
+                    val part = parts.getJSONObject(i)
+                    if (part.optBoolean("thought", false)) continue
+                    append(part.optString("text", ""))
+                }
+            }.takeIf { it.isNotEmpty() }
+        }.getOrNull()
+    }
+
+    /** Strips the "data:" prefix; null for comments, blanks and the done marker. */
+    private fun ssePayload(line: String): String? {
+        val trimmed = line.trim()
+        if (!trimmed.startsWith("data:")) return null
+        val payload = trimmed.removePrefix("data:").trim()
+        if (payload.isEmpty() || payload == "[DONE]") return null
+        return payload
+    }
+
     fun describeHttpError(code: Int, body: String): String {
         val apiMessage = runCatching {
             JSONObject(body).optJSONObject("error")?.optString("message").orEmpty()

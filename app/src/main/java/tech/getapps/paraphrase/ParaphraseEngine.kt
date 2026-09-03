@@ -30,7 +30,16 @@ class ParaphraseEngine(context: Context) {
     var fellBackFromDevice: Boolean = false
         private set
 
-    suspend fun paraphrase(text: String, style: Style = prefs.style): String =
+    /**
+     * [onPartial] receives the text so far as it streams in, on a background
+     * thread. Passing null asks for a single response instead. Streaming is
+     * what makes the wait watchable rather than a spinner, so the UI passes it.
+     */
+    suspend fun paraphrase(
+        text: String,
+        style: Style = prefs.style,
+        onPartial: ((String) -> Unit)? = null
+    ): String =
         withContext(Dispatchers.IO) {
             val input = text.trim()
             if (input.isEmpty()) throw ParaphraseException("Nothing to paraphrase.")
@@ -56,8 +65,8 @@ class ParaphraseEngine(context: Context) {
             }
 
             val raw = when {
-                provider == Provider.GEMINI -> callGemini(input, style)
-                else -> callOpenAiCompatible(input, style, prefs.baseUrl)
+                provider == Provider.GEMINI -> callGemini(input, style, onPartial)
+                else -> callOpenAiCompatible(input, style, prefs.baseUrl, onPartial)
             }
             ResponseParser.clean(raw, input)
         }
@@ -76,20 +85,31 @@ class ParaphraseEngine(context: Context) {
 
     // ---------------------------------------------------------------- backends
 
-    private fun callGemini(text: String, style: Style): String {
+    private fun callGemini(text: String, style: Style, onPartial: ((String) -> Unit)?): String {
         val model = prefs.model
-        val url = "${prefs.baseUrl}/models/$model:generateContent"
-        val body = GeminiRequest.body(model, systemPrompt(style), text)
-        val response = post(url, body.toString(), mapOf("x-goog-api-key" to prefs.apiKey))
-        return ResponseParser.gemini(response)
+        val headers = mapOf("x-goog-api-key" to prefs.apiKey)
+        val body = GeminiRequest.body(model, systemPrompt(style), text).toString()
+
+        if (onPartial == null) {
+            val url = "${prefs.baseUrl}/models/$model:generateContent"
+            return ResponseParser.gemini(post(url, body, headers))
+        }
+        val url = "${prefs.baseUrl}/models/$model:streamGenerateContent?alt=sse"
+        return stream(url, body, headers, onPartial, ResponseParser::geminiDelta)
     }
 
-    private fun callOpenAiCompatible(text: String, style: Style, base: String): String {
+    private fun callOpenAiCompatible(
+        text: String,
+        style: Style,
+        base: String,
+        onPartial: ((String) -> Unit)?
+    ): String {
         val url = base.trimEnd('/') + "/chat/completions"
         val body = JSONObject()
             .put("model", prefs.model)
             .put("temperature", 0.7)
             .put("n", 1)
+            .apply { if (onPartial != null) put("stream", true) }
             .put(
                 "messages",
                 JSONArray()
@@ -99,14 +119,58 @@ class ParaphraseEngine(context: Context) {
 
         val key = prefs.apiKey
         val headers = if (key.isBlank()) emptyMap() else mapOf("Authorization" to "Bearer $key")
-        val response = post(url, body.toString(), headers)
-        return ResponseParser.openAi(response)
+        if (onPartial == null) {
+            return ResponseParser.openAi(post(url, body.toString(), headers))
+        }
+        return stream(url, body.toString(), headers, onPartial, ResponseParser::openAiDelta)
     }
 
     // ---------------------------------------------------------------- transport
 
-    private fun post(url: String, payload: String, headers: Map<String, String>): String {
-        val connection = (URL(url).openConnection() as HttpURLConnection).apply {
+    /**
+     * Reads a server-sent-event stream, handing the caller the text so far
+     * after every chunk and returning the whole thing at the end.
+     */
+    private fun stream(
+        url: String,
+        payload: String,
+        headers: Map<String, String>,
+        onPartial: (String) -> Unit,
+        parseDelta: (String) -> String?
+    ): String {
+        val connection = openConnection(url, headers).apply {
+            setRequestProperty("Accept", "text/event-stream")
+        }
+        try {
+            connection.outputStream.use { it.write(payload.toByteArray(StandardCharsets.UTF_8)) }
+            val code = connection.responseCode
+            if (code !in 200..299) {
+                val error = connection.errorStream?.bufferedReader(StandardCharsets.UTF_8)
+                    ?.use(BufferedReader::readText).orEmpty()
+                throw ParaphraseException(ResponseParser.describeHttpError(code, error))
+            }
+            val accumulated = StringBuilder()
+            connection.inputStream.bufferedReader(StandardCharsets.UTF_8).use { reader ->
+                while (true) {
+                    val line = reader.readLine() ?: break
+                    val delta = parseDelta(line) ?: continue
+                    accumulated.append(delta)
+                    onPartial(accumulated.toString())
+                }
+            }
+            if (accumulated.isEmpty()) throw ParaphraseException("The model returned an empty result.")
+            return accumulated.toString()
+        } catch (e: ParaphraseException) {
+            throw e
+        } catch (e: Exception) {
+            throw ParaphraseException("Network error: ${e.message ?: e.javaClass.simpleName}")
+        } finally {
+            connection.disconnect()
+        }
+    }
+
+    private fun openConnection(url: String, headers: Map<String, String>): HttpURLConnection =
+        (URL(url).openConnection() as HttpURLConnection).apply {
             requestMethod = "POST"
             connectTimeout = 15_000
             readTimeout = 45_000
@@ -114,6 +178,9 @@ class ParaphraseEngine(context: Context) {
             setRequestProperty("Content-Type", "application/json; charset=utf-8")
             headers.forEach { (k, v) -> setRequestProperty(k, v) }
         }
+
+    private fun post(url: String, payload: String, headers: Map<String, String>): String {
+        val connection = openConnection(url, headers)
         try {
             connection.outputStream.use { it.write(payload.toByteArray(StandardCharsets.UTF_8)) }
             val code = connection.responseCode

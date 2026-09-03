@@ -46,6 +46,15 @@
             android:launchMode="singleTop"
             android:taskAffinity=""
             android:theme="@style/Theme.Paraphrase.Overlay">
+            <!--
+                Position in the selection toolbar is not ours to choose. AOSP's
+                Editor hardcodes Cut/Copy/Paste/Share/Select all at menu orders
+                4-11 and starts every PROCESS_TEXT action at 100, so a third
+                party can never sit among the built-ins. android:priority does
+                not help either: the platform zeroes intent-filter priority for
+                non-system apps (verified on device — it stores priority=0).
+                Do not re-add it; it is a no-op that reads like a fix.
+            -->
             <intent-filter>
                 <action android:name="android.intent.action.PROCESS_TEXT" />
                 <category android:name="android.intent.category.DEFAULT" />

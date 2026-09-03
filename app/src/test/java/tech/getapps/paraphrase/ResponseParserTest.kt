@@ -63,6 +63,45 @@ class ResponseParserTest {
     }
 
     @Test
+    fun `openAi stream deltas are read, control lines ignored`() {
+        assertEquals(
+            "Hello",
+            ResponseParser.openAiDelta("""data: {"choices":[{"delta":{"content":"Hello"}}]}""")
+        )
+        assertEquals(null, ResponseParser.openAiDelta("data: [DONE]"))
+        assertEquals(null, ResponseParser.openAiDelta(""))
+        assertEquals(null, ResponseParser.openAiDelta(": keep-alive comment"))
+        // A role-only first chunk carries no text.
+        assertEquals(
+            null,
+            ResponseParser.openAiDelta("""data: {"choices":[{"delta":{"role":"assistant"}}]}""")
+        )
+    }
+
+    @Test
+    fun `gemini stream deltas are read and thought parts skipped`() {
+        assertEquals(
+            "Hi there",
+            ResponseParser.geminiDelta(
+                """data: {"candidates":[{"content":{"parts":[{"text":"Hi there"}]}}]}"""
+            )
+        )
+        assertEquals(
+            null,
+            ResponseParser.geminiDelta(
+                """data: {"candidates":[{"content":{"parts":[{"text":"thinking","thought":true}]}}]}"""
+            )
+        )
+        assertEquals(null, ResponseParser.geminiDelta("data: [DONE]"))
+    }
+
+    @Test
+    fun `malformed stream lines never throw`() {
+        assertEquals(null, ResponseParser.openAiDelta("data: {not json"))
+        assertEquals(null, ResponseParser.geminiDelta("data: {not json"))
+    }
+
+    @Test
     fun `http errors carry an actionable hint`() {
         val message = ResponseParser.describeHttpError(401, """{"error":{"message":"Invalid key"}}""")
         assertTrue(message.contains("HTTP 401"))

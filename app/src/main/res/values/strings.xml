@@ -7,13 +7,14 @@
     <string name="provider_label">AI provider (free tier)</string>
     <string name="api_key_label">API key</string>
     <string name="model_label">Model</string>
-    <string name="base_url_label">Base URL (OpenAI-compatible)</string>
+    <string name="base_url_label">Server URL</string>
     <string name="style_label">Default rewrite style</string>
     <string name="instant_title">Instant replace</string>
     <string name="instant_summary">Replace the selected text as soon as the first result arrives. Turn off to preview the result first.</string>
     <string name="save">Save</string>
     <string name="saved">Settings saved</string>
     <string name="get_key">Get a free key</string>
+    <string name="get_provider">Set it up</string>
 
     <string name="playground_title">Try it</string>
     <string name="playground_hint">Type or paste text, select it, and pick Paraphrase from the popup — or use the button below.</string>

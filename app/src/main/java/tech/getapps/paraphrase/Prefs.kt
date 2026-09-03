@@ -45,8 +45,13 @@ class Prefs(context: Context) {
             .apply()
 
     var baseUrl: String
-        get() = sp.getString(KEY_BASE_URL, null) ?: "https://openrouter.ai/api/v1"
-        set(value) = sp.edit().putString(KEY_BASE_URL, value.trim().trimEnd('/')).apply()
+        get() = sp.getString(KEY_BASE_URL + provider.id, null) ?: provider.defaultBaseUrl
+        set(value) = sp.edit()
+            .putString(
+                KEY_BASE_URL + provider.id,
+                value.trim().trimEnd('/').ifEmpty { provider.defaultBaseUrl }
+            )
+            .apply()
 
     var style: Style
         get() = Style.fromId(sp.getString(KEY_STYLE, null))
@@ -62,7 +67,7 @@ class Prefs(context: Context) {
         get() = sp.getBoolean(KEY_SEEN_LANDING, false)
         set(value) = sp.edit().putBoolean(KEY_SEEN_LANDING, value).apply()
 
-    fun hasKey(): Boolean = provider == Provider.LOCAL || apiKey.isNotBlank()
+    fun hasKey(): Boolean = !provider.requiresKey || apiKey.isNotBlank()
 
     private fun keyFor(p: Provider) = KEY_API + p.id
 

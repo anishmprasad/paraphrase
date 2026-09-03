@@ -17,9 +17,12 @@ class ParaphraseEngine(context: Context) {
 
     private val prefs = Prefs(context)
 
-    /** True when we'll silently fall back to the offline rewriter. */
+    /**
+     * True when we'll silently fall back to the offline rewriter — a cloud
+     * provider with no key yet. Local servers need no key, so they never do.
+     */
     val usingFallback: Boolean
-        get() = prefs.provider != Provider.LOCAL && prefs.apiKey.isBlank()
+        get() = prefs.provider.requiresKey && prefs.apiKey.isBlank()
 
     suspend fun paraphrase(text: String, style: Style = prefs.style): String =
         withContext(Dispatchers.IO) {
@@ -30,15 +33,13 @@ class ParaphraseEngine(context: Context) {
             }
 
             val provider = prefs.provider
-            if (provider == Provider.LOCAL || prefs.apiKey.isBlank()) {
+            if (provider == Provider.LOCAL || usingFallback) {
                 return@withContext OfflineRewriter.rewrite(input, style)
             }
 
-            val raw = when (provider) {
-                Provider.GEMINI -> callGemini(input, style)
-                Provider.GROQ -> callOpenAiCompatible(input, style, GROQ_BASE)
-                Provider.OPENAI_COMPAT -> callOpenAiCompatible(input, style, prefs.baseUrl)
-                Provider.LOCAL -> ""
+            val raw = when {
+                provider == Provider.GEMINI -> callGemini(input, style)
+                else -> callOpenAiCompatible(input, style, prefs.baseUrl)
             }
             ResponseParser.clean(raw, input)
         }
@@ -59,7 +60,7 @@ class ParaphraseEngine(context: Context) {
 
     private fun callGemini(text: String, style: Style): String {
         val model = prefs.model
-        val url = "$GEMINI_BASE/models/$model:generateContent"
+        val url = "${prefs.baseUrl}/models/$model:generateContent"
         val body = GeminiRequest.body(model, systemPrompt(style), text)
         val response = post(url, body.toString(), mapOf("x-goog-api-key" to prefs.apiKey))
         return ResponseParser.gemini(response)
@@ -78,7 +79,9 @@ class ParaphraseEngine(context: Context) {
                     .put(JSONObject().put("role", "user").put("content", text))
             )
 
-        val response = post(url, body.toString(), mapOf("Authorization" to "Bearer ${prefs.apiKey}"))
+        val key = prefs.apiKey
+        val headers = if (key.isBlank()) emptyMap() else mapOf("Authorization" to "Bearer $key")
+        val response = post(url, body.toString(), headers)
         return ResponseParser.openAi(response)
     }
 
@@ -113,7 +116,5 @@ class ParaphraseEngine(context: Context) {
 
     private companion object {
         const val MAX_CHARS = 8000
-        const val GEMINI_BASE = "https://generativelanguage.googleapis.com/v1beta"
-        const val GROQ_BASE = "https://api.groq.com/openai/v1"
     }
 }

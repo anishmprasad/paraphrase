@@ -44,15 +44,23 @@ SEVEN WAYS TO REWRITE
 
 Switch style from the popup and regenerate without starting over.
 
-BRING YOUR OWN AI KEY
+BRING YOUR OWN AI, FREE
 
-Paraphrase has no subscription and no account. You connect it to an AI provider with a free tier and paste in your own key:
+Paraphrase has no subscription and no account of its own. Pick a provider, paste your own key, and you are done:
 
 • Google Gemini — free tier, no card required
-• Groq — free tier, very fast
-• Any OpenAI-compatible endpoint — OpenRouter, a company gateway, or a server you run yourself
+• Groq — free tier, and the fastest of these
+• Cerebras — free tier, around a million tokens a day
+• Mistral — a large free monthly quota
+• OpenRouter — one key, and any model id ending in ":free"
+• Hugging Face — free tier on shared hardware
+• Any other OpenAI-compatible endpoint — a gateway, vLLM, llama.cpp
 
-There is also a basic on-device rewriter that needs no key, no account and no network. It does simple phrase and word substitution, so treat it as a fallback rather than a replacement for a real model.
+RUN IT ON YOUR OWN MACHINE
+
+Ollama and LM Studio are one-tap presets. Point the app at your computer on the same network and there is no key, no account, no quota and no bill — and your text never leaves your home network.
+
+There is also a basic on-device rewriter that needs no key, no account and no network at all. It does simple phrase and word substitution, so treat it as a fallback rather than a replacement for a real model.
 
 PRIVACY
 

@@ -20,7 +20,14 @@ what it does with the text:
 
 - Google Gemini — https://ai.google.dev/gemini-api/terms
 - Groq — https://groq.com/privacy-policy/
+- Cerebras — https://www.cerebras.ai/privacy
+- Mistral — https://mistral.ai/terms/#privacy-policy (note: the free tier requires opting in to training on your data)
+- OpenRouter — https://openrouter.ai/privacy
+- Hugging Face — https://huggingface.co/privacy
 - Any OpenAI-compatible endpoint you configure — governed by whoever operates it
+
+If you point the app at **Ollama or LM Studio on your own computer**, the text
+goes to that machine on your own network and no third party is involved.
 
 If you use the **on-device basic rewriter**, no network request is made at all
 and the text never leaves your phone.

@@ -84,12 +84,15 @@ class MainActivity : AppCompatActivity() {
         binding.modelInput.setText(prefs.model)
         binding.baseUrlInput.setText(prefs.baseUrl)
 
-        val needsKey = provider != Provider.LOCAL
-        binding.apiKeyLayout.visibility = if (needsKey) View.VISIBLE else View.GONE
-        binding.getKeyButton.visibility = if (needsKey) View.VISIBLE else View.GONE
-        binding.modelLayout.visibility = if (needsKey) View.VISIBLE else View.GONE
-        binding.baseUrlLayout.visibility =
-            if (provider == Provider.OPENAI_COMPAT) View.VISIBLE else View.GONE
+        val remote = provider != Provider.LOCAL
+        // A local server needs no key, so the field would only be noise.
+        binding.apiKeyLayout.visibility = if (remote && provider.requiresKey) View.VISIBLE else View.GONE
+        binding.getKeyButton.visibility = if (provider.keyUrl.isNotBlank()) View.VISIBLE else View.GONE
+        binding.getKeyButton.setText(
+            if (provider.requiresKey) R.string.get_key else R.string.get_provider
+        )
+        binding.modelLayout.visibility = if (remote) View.VISIBLE else View.GONE
+        binding.baseUrlLayout.visibility = if (provider.editableBaseUrl) View.VISIBLE else View.GONE
         if (previous != provider) {
             binding.outputCard.visibility = View.GONE
             binding.reportButton.visibility = View.GONE

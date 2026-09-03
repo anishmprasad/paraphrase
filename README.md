@@ -31,17 +31,30 @@ SharedPreferences and are sent only to the provider you chose.
 
 | Provider | Free tier | Get a key |
 |---|---|---|
-| **Google Gemini** (default, `gemini-2.5-flash`) | Free tier, no card | https://aistudio.google.com/app/apikey |
-| **Groq** (`llama-3.3-70b-versatile`) | Free tier, daily limits | https://console.groq.com/keys |
-| **OpenAI-compatible** (OpenRouter free models, a gateway, your own llama.cpp server) | Depends on the endpoint | https://openrouter.ai/keys |
+| **Google Gemini** (default, `gemini-3.8-flash`) | Free tier, no card | https://aistudio.google.com/app/apikey |
+| **Groq** (`llama-3.3-70b-versatile`) | Free tier, daily limits, fastest | https://console.groq.com/keys |
+| **Cerebras** (`llama-3.3-70b`) | ~1M tokens/day | https://cloud.cerebras.ai |
+| **Mistral** (`mistral-small-latest`) | Large monthly quota, requires opting in to training | https://console.mistral.ai/api-keys |
+| **OpenRouter** (`...:free` models) | Free models, one key | https://openrouter.ai/keys |
+| **Hugging Face** (router endpoint) | Rate-limited free tier | https://huggingface.co/settings/tokens |
+| **Ollama** on your own machine | Free, no key, no quota | https://ollama.com/download |
+| **LM Studio** on your own machine | Free, no key, no quota | https://lmstudio.ai |
+| **Other OpenAI-compatible** | Depends on the endpoint | — |
 | **On-device basic rewriter** | Always free, works offline | no key needed |
+
+To use Ollama or LM Studio, both the phone and the computer must be on the same
+network. Start Ollama with `OLLAMA_HOST=0.0.0.0 ollama serve` (or tick "serve on
+network" in LM Studio) and put the computer's LAN address in the Server URL
+field, e.g. `http://192.168.1.42:11434/v1`. Nothing leaves your network.
 
 The on-device option is a plain phrase/synonym rewriter, not a model — it is the fallback
 when no key is set so the app does something useful out of the box, but the quality is not
 comparable. Set a key for real paraphrasing.
 
-Plain HTTP is only allowed for `localhost` / `10.0.2.2`, so a self-hosted endpoint on the
-same machine works; everything else must be HTTPS.
+Cleartext HTTP is permitted, because a self-hosted server on the LAN serves plain
+HTTP and Android's network security config cannot express "private ranges only".
+Every hosted provider above is HTTPS; the only cleartext destination is one the
+user typed in themselves.
 
 ## The landing page
 

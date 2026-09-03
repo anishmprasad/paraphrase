@@ -4,69 +4,62 @@ Paste these into Play Console → Grow → Store presence → Main store listing
 
 ## App name (30 char limit)
 
-    Paraphrase: AI Text Rewriter
+```
+Paraphrase: AI Text Rewriter
+```
 
 ## Short description (80 char limit)
 
-    Rewrite selected text with AI, in place, inside any app. No copy-paste.
+```
+Rewrite selected text with AI, in place, inside any app. No copy-paste.
+```
 
 ## Full description (4000 char limit)
 
-    Paraphrase rewrites text where you already are.
+Paste exactly as-is. Play preserves line breaks, so the paragraphs must stay
+on single lines — hard-wrapping them here would show as ragged breaks on a phone.
 
-    Select a sentence in any app — an email you are drafting, a message, a form,
-    a note — tap Paraphrase in the selection menu, and the words are replaced
-    with a cleaner version. You never leave the app you were in, never copy and
-    paste into a separate tool, and never switch keyboards.
+```
+Paraphrase rewrites text where you already are.
 
-    HOW IT WORKS
+Select a sentence in any app — an email you are drafting, a message, a form, a note — tap Paraphrase in the selection menu, and the words are replaced with a cleaner version. You never leave the app you were in, never copy and paste into a separate tool, and never switch keyboards.
 
-    1. Long-press text anywhere in Android and drag the handles over what you
-       want rewritten.
-    2. Tap Paraphrase in the popup toolbar. If it is not visible, tap the
-       three-dot overflow at the end of the toolbar.
-    3. The selection is replaced with the rewritten text.
+HOW IT WORKS
 
-    Where text cannot be edited — a web page, someone else's message — the
-    rewrite is shown to you and copied to the clipboard instead.
+1. Long-press text anywhere in Android and drag the handles over what you want rewritten.
+2. Tap Paraphrase in the popup toolbar. If it is not visible, tap the three-dot overflow at the end of the toolbar.
+3. The selection is replaced with the rewritten text.
 
-    SEVEN WAYS TO REWRITE
+Where text cannot be edited — a web page, someone else's message — the rewrite is shown to you and copied to the clipboard instead.
 
-    • Standard - a natural rewrite at the same length
-    • Fluent - fixes grammar, spelling and awkward phrasing
-    • Formal - polished, professional, suitable for business email
-    • Casual - relaxed and conversational
-    • Concise - the same points in fewer words
-    • Expand - more detail and clearer explanation
-    • Simple English - short sentences and common words
+SEVEN WAYS TO REWRITE
 
-    Switch style from the popup and regenerate without starting over.
+• Standard — a natural rewrite at the same length
+• Fluent — fixes grammar, spelling and awkward phrasing
+• Formal — polished and professional, suitable for business email
+• Casual — relaxed and conversational
+• Concise — the same points in fewer words
+• Expand — more detail and clearer explanation
+• Simple English — short sentences and common words
 
-    BRING YOUR OWN AI KEY
+Switch style from the popup and regenerate without starting over.
 
-    Paraphrase has no subscription and no account. You connect it to an AI
-    provider with a free tier and paste in your own key:
+BRING YOUR OWN AI KEY
 
-    • Google Gemini - free tier, no card required
-    • Groq - free tier, very fast
-    • Any OpenAI-compatible endpoint - OpenRouter, a company gateway, or a
-      server you run yourself
+Paraphrase has no subscription and no account. You connect it to an AI provider with a free tier and paste in your own key:
 
-    There is also a basic on-device rewriter that needs no key, no account and
-    no network. It does simple phrase and word substitution, so it is a fallback
-    rather than a replacement for a real model.
+• Google Gemini — free tier, no card required
+• Groq — free tier, very fast
+• Any OpenAI-compatible endpoint — OpenRouter, a company gateway, or a server you run yourself
 
-    PRIVACY
+There is also a basic on-device rewriter that needs no key, no account and no network. It does simple phrase and word substitution, so treat it as a fallback rather than a replacement for a real model.
 
-    Your key is stored only on your device and is sent only to the provider you
-    picked. Paraphrase has no servers, no account system and no analytics. Text
-    you rewrite goes directly from your phone to that provider so it can be
-    rewritten — nowhere else. Read their privacy policy to understand how they
-    handle it.
+PRIVACY
 
-    AI-generated text can be wrong or inappropriate. Check anything that
-    matters before you send it, and use the Report option on any result that is
-    offensive or harmful.
+Your key is stored only on your device and is sent only to the provider you picked. Paraphrase has no servers, no account system and no analytics. Text you rewrite goes directly from your phone to that provider so it can be rewritten — nowhere else. Read that provider's privacy policy to understand how they handle it.
+
+AI-generated text can be wrong or inappropriate. Check anything that matters before you send it, and use the Report option on any result that is offensive or harmful.
+```
 
 ## Category and contact
 
